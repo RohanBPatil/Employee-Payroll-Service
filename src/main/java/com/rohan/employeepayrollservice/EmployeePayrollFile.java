@@ -9,6 +9,11 @@ import java.util.List;
 public class EmployeePayrollFile {
 	public static String PAYROLL_FILE_NAME = "payroll.txt";
 
+	/**
+	 * writes data to file
+	 * 
+	 * @param list
+	 */
 	public void writeData(List<EmployeePayrollData> list) {
 		StringBuffer employeeBuffer = new StringBuffer();
 		list.forEach(employee -> {
@@ -23,6 +28,22 @@ public class EmployeePayrollFile {
 		}
 	}
 
+	/**
+	 * Prints data from file to console
+	 */
+	public void printData() {
+		try {
+			Files.lines(new File(PAYROLL_FILE_NAME).toPath()).forEach(System.out::println);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * counts total entries
+	 * 
+	 * @return
+	 */
 	public long countEntries() {
 		long totalEntries = 0;
 		try {

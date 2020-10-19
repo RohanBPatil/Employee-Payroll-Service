@@ -26,6 +26,11 @@ public class EmployeePayrollService {
 		employeePayrollService.writeEmployeeData(IOService.CONSOLE_IO);
 	}
 
+	/**
+	 * Takes employee input from user through console
+	 * 
+	 * @param scanner
+	 */
 	public void readEmployeeData(Scanner scanner) {
 		System.out.println("Enter Employee ID : ");
 		int id = scanner.nextInt();
@@ -37,11 +42,27 @@ public class EmployeePayrollService {
 		employeePayrollList.add(new EmployeePayrollData(id, name, salary));
 	}
 
+	/**
+	 * Writes data to console or file
+	 * 
+	 * @param ioService
+	 */
 	public void writeEmployeeData(IOService ioService) {
 		if (ioService.equals(IOService.CONSOLE_IO))
 			System.out.println("\nWriting Employee Payroll Roaster to Console\n" + employeePayrollList);
 		else if (ioService.equals(IOService.FILE_IO)) {
 			new EmployeePayrollFile().writeData(employeePayrollList);
+		}
+	}
+
+	/**
+	 * Prints data from file to console
+	 * 
+	 * @param ioService
+	 */
+	public void printData(IOService ioService) {
+		if (ioService.equals(IOService.FILE_IO)) {
+			new EmployeePayrollFile().printData();
 		}
 	}
 
