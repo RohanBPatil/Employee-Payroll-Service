@@ -1,13 +1,21 @@
 package com.rohan.employeepayrollservice;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class EmployeePayrollService {
-	public ArrayList<EmployeePayrollData> employeePayrollList;
+	public enum IOService {
+		CONSOLE_IO, FILE_IO, DB_IO, REST_IO
+	};
 
-	public EmployeePayrollService(ArrayList<EmployeePayrollData> employeePayrollList) {
+	public List<EmployeePayrollData> employeePayrollList;
+
+	public EmployeePayrollService(List<EmployeePayrollData> employeePayrollList) {
 		this.employeePayrollList = employeePayrollList;
+	}
+
+	public EmployeePayrollService() {
 	}
 
 	public static void main(String[] args) {
@@ -15,7 +23,7 @@ public class EmployeePayrollService {
 		EmployeePayrollService employeePayrollService = new EmployeePayrollService(employeePayrollList);
 		Scanner scanner = new Scanner(System.in);
 		employeePayrollService.readEmployeeData(scanner);
-		employeePayrollService.writeEmployeePayrollData();
+		employeePayrollService.writeEmployeeData(IOService.CONSOLE_IO);
 	}
 
 	public void readEmployeeData(Scanner scanner) {
@@ -29,7 +37,19 @@ public class EmployeePayrollService {
 		employeePayrollList.add(new EmployeePayrollData(id, name, salary));
 	}
 
-	public void writeEmployeePayrollData() {
-		System.out.println("\nWriting Employee Payroll Roaster to Console\n" + employeePayrollList);
+	public void writeEmployeeData(IOService ioService) {
+		if (ioService.equals(IOService.CONSOLE_IO))
+			System.out.println("\nWriting Employee Payroll Roaster to Console\n" + employeePayrollList);
+		else if (ioService.equals(IOService.FILE_IO)) {
+			new EmployeePayrollFile().writeData(employeePayrollList);
+		}
+	}
+
+	public long countEntries(IOService fileIo) {
+		long entries = 0;
+		if (fileIo.equals(IOService.FILE_IO)) {
+			entries = new EmployeePayrollFile().countEntries();
+		}
+		return entries;
 	}
 }
