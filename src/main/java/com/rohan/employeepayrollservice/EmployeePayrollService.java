@@ -18,12 +18,24 @@ public class EmployeePayrollService {
 	public EmployeePayrollService() {
 	}
 
+	static Scanner scanner = new Scanner(System.in);
+
 	public static void main(String[] args) {
 		ArrayList<EmployeePayrollData> employeePayrollList = new ArrayList<>();
 		EmployeePayrollService employeePayrollService = new EmployeePayrollService(employeePayrollList);
-		Scanner scanner = new Scanner(System.in);
-		employeePayrollService.readEmployeeData(scanner);
-		employeePayrollService.writeEmployeeData(IOService.CONSOLE_IO);
+
+		String choice = "yes";
+		do {
+			if (choice.equalsIgnoreCase("yes")) {
+				employeePayrollService.readEmployeeData(IOService.CONSOLE_IO);
+				scanner.nextLine();
+				System.out.println("Want to enter new employee payroll data?");
+				choice = scanner.nextLine();
+			}
+		} while (choice.equalsIgnoreCase("yes"));
+		employeePayrollService.writeEmployeeData(IOService.FILE_IO);
+		employeePayrollService.readEmployeeData(IOService.FILE_IO);
+
 	}
 
 	/**
@@ -31,15 +43,20 @@ public class EmployeePayrollService {
 	 * 
 	 * @param scanner
 	 */
-	public void readEmployeeData(Scanner scanner) {
-		System.out.println("Enter Employee ID : ");
-		int id = scanner.nextInt();
-		scanner.nextLine();
-		System.out.println("Enter Employee Name : ");
-		String name = scanner.nextLine();
-		System.out.println("Enter Employee Salary : ");
-		double salary = scanner.nextDouble();
-		employeePayrollList.add(new EmployeePayrollData(id, name, salary));
+	public void readEmployeeData(IOService ioService) {
+		if (ioService.equals(IOService.CONSOLE_IO)) {
+			System.out.println("Enter Employee ID : ");
+			int id = scanner.nextInt();
+			scanner.nextLine();
+			System.out.println("Enter Employee Name : ");
+			String name = scanner.nextLine();
+			System.out.println("Enter Employee Salary : ");
+			double salary = scanner.nextDouble();
+			employeePayrollList.add(new EmployeePayrollData(id, name, salary));
+		} else if (ioService.equals(IOService.FILE_IO)) {
+			System.out.println("reading data from file");
+			new EmployeePayrollFile().printData();
+		}
 	}
 
 	/**
